@@ -6,8 +6,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
   const config = new DocumentBuilder()
-    .setTitle('Olx example')
-    .setDescription('The Olx API description')
+    .setTitle('The Olx online web-site')
+    .setDescription('The Olx API description, Created with Swagger UI')
     .setVersion('1.0')
     .addSecurityRequirements('bearer', ['bearer'])
     .addBearerAuth()
