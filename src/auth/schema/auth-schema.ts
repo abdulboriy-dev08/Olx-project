@@ -4,39 +4,40 @@ import { Region } from 'src/region/schema/region-schema';
 
 export type AuthDocument = HydratedDocument<Auth>;
 
-enum userTpe {
-    SELLER = 'SELLER',
-    ADMIN = 'ADMIN',
-    CLIENT = 'CLIENT',
+enum userType {
+  SELLER = 'SELLER',
+  ADMIN = 'ADMIN',
+  CLIENT = 'CLIENT',
+  USER = 'USER',
 }
 
-@Schema({versionKey: false})
+@Schema({ versionKey: false })
 export class Auth {
-  @Prop()
+  @Prop({ required: true })
   fullName: string;
 
-  @Prop()
+  @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop()
+  @Prop({ required: true })
   password: string;
 
-  @Prop()
+  @Prop({ required: true, unique: true })
   phone: string;
 
-  @Prop()
+  @Prop({ required: true })
   avatar: string;
 
-  @Prop()
-  userType: userTpe;
+  @Prop({ default: 'USER' })
+  userType: userType;
 
-  @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Region'}]})
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Region' }] })
   region: Region[];
 
   @Prop()
   shopName: string;
 
-  @Prop()
+  @Prop({ required: true })
   location: string;
 }
 
