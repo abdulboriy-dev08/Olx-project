@@ -32,8 +32,8 @@ export class Auth {
   @Prop({ type: String, enum: userType, default: userType.USER })
   userType: userType;
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Region' }] })
-  region: Region[];
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Region' })
+  region: Region;
 
   @Prop()
   shopName: string;
@@ -43,6 +43,9 @@ export class Auth {
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Banner' }] })
   banner: Banner[];
+ 
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }] })
+  comment: Comment[];
 }
 
 export const AuthSchema = SchemaFactory.createForClass(Auth);
