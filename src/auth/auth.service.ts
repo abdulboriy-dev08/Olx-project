@@ -72,7 +72,7 @@ export class AuthService {
           'Not allowed, Only Admin can see all Users',
         );
 
-      let data = await this.authModel.find().exec();
+      let data = await this.authModel.find().populate('comment').exec();
       if (!data.length) return { message: 'Auth table empty' };
 
       return { data };
