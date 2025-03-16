@@ -19,7 +19,8 @@ import { CategoriesModule } from './categories/categories.module';
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/file',
     }),
-    CategoriesModule],
+    CategoriesModule,
+  ],
   controllers: [],
   providers: [],
 })
