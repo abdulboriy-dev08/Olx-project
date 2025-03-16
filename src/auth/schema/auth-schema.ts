@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { Banner } from 'src/banner/schema/banner-schema';
 import { Region } from 'src/region/schema/region-schema';
 
 export type AuthDocument = HydratedDocument<Auth>;
@@ -28,7 +29,7 @@ export class Auth {
   @Prop({ required: true })
   avatar: string;
 
-  @Prop({ default: 'USER' })
+  @Prop({ type: String, enum: userType, default: userType.USER })
   userType: userType;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Region' }] })
@@ -37,8 +38,11 @@ export class Auth {
   @Prop()
   shopName: string;
 
-  @Prop({ required: true })
+  @Prop()
   location: string;
+
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Banner' }] })
+  banner: Banner[];
 }
 
 export const AuthSchema = SchemaFactory.createForClass(Auth);
