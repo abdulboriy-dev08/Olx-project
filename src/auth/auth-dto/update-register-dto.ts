@@ -1,35 +1,58 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsEmail, IsPhoneNumber, IsString } from 'class-validator';
+import { ApiPropertyOptional, PartialType } from '@nestjs/swagger';
+import {
+  IsEmail,
+  IsEnum,
+  IsOptional,
+  IsPhoneNumber,
+  IsString,
+} from 'class-validator';
 import { registerDto } from './register-dto';
 
+enum userType {
+  SELLER = 'SELLER',
+  ADMIN = 'ADMIN',
+  CLIENT = 'CLIENT',
+  USER = 'USER',
+}
+
 export class updateRegisterDto extends PartialType(registerDto) {
+  @IsOptional()
   @IsString()
-  @ApiProperty({ example: 'Berjamin Franklin' })
-  fullName: string;
+  @ApiPropertyOptional({ example: 'Benjamin Franklin' })
+  fullName?: string;
 
+  @IsOptional()
   @IsEmail()
-  @ApiProperty({ example: 'berjaminfrank@example.com' })
-  email: string;
+  @ApiPropertyOptional({ example: 'benjaminfrank@example.com' })
+  email?: string;
 
-  @ApiProperty({ example: 'frank342' })
-  password: string;
+  @IsOptional()
+  @ApiPropertyOptional({ example: 'newpassword123!' })
+  password?: string;
 
+  @IsOptional()
   @IsPhoneNumber()
-  @ApiProperty({ example: '+998507525151' })
-  phone: string;
+  @ApiPropertyOptional({ example: '+9985075255354' })
+  phone?: string;
 
-  @ApiProperty({ example: 'avatar.png' })
-  avatar: string;
+  @IsOptional()
+  @ApiPropertyOptional({ example: 'avatar.png' })
+  avatar?: string;
 
-  @ApiProperty({ example: 'SELLER' })
-  userType: string;
+  @IsOptional()
+  @IsEnum(userType)
+  @ApiPropertyOptional({ example: 'SELLER' })
+  userType?: userType;
 
-  @ApiProperty({ example: '67d25f569d198ce0a684066c' })
-  region: string;
+  @IsOptional()
+  @ApiPropertyOptional({ example: '67d25f569d198ce0a684066c' })
+  region?: string;
 
-  @ApiProperty({ example: 'Magazin' })
-  shopName: string;
+  @IsOptional()
+  @ApiPropertyOptional({ example: 'My Awesome Store' })
+  shopName?: string;
 
-  @ApiProperty({ example: 'Chilonzor street' })
-  location: string;
+  @IsOptional()
+  @ApiPropertyOptional({ example: "Farg'ona, Uzbekistan" })
+  location?: string;
 }
