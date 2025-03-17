@@ -12,7 +12,7 @@ import {
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './comment-dto/create-comment.dto';
 import { UpdateCommentDto } from './comment-dto/update-comment.dto';
-import { AuthGuard } from 'src/guard/auth-guard';
+import { AuthGuard } from 'src/guards/auth.guard';
 import { Request } from 'express';
 
 @Controller('comment')
@@ -37,13 +37,16 @@ export class CommentController {
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto, @Req() request: Request) {
-    return this.commentService.update(id, updateCommentDto, request);
+  update(
+    @Param('id') id: string,
+    @Body() updateCommentDto: UpdateCommentDto,
+  ) {
+    return this.commentService.update(id, updateCommentDto);
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string, @Req() request: Request) {
-    return this.commentService.remove(id, request);
+  remove(@Param('id') id: string) {
+    return this.commentService.remove(id);
   }
 }
