@@ -84,43 +84,58 @@ export class AuthService {
   async findOne(id: string, request: Request) {
     try {
       let user = request['user'];
-      if (user.userType != 'ADMIN') return new ForbiddenException('Not allowed, Only Admin can see User');
+      if (user.userType != 'ADMIN')
+        return new ForbiddenException('Not allowed, Only Admin can see User');
 
-      let data = await this.authModel.findById(id);
-      if(!data) return new NotFoundException('User not found ❗');
+      let data = await this.authModel.findById(id).populate('comment');
+      if (!data) return new NotFoundException('User not found ❗');
 
       return { data };
-
     } catch (error) {
       return new BadRequestException(error.message);
     }
   }
 
-  async update(id: string, updateRegisterDto: updateRegisterDto, request: Request) {
+  async update(
+    id: string,
+    updateRegisterDto: updateRegisterDto,
+    request: Request,
+  ) {
     try {
       let user = request['user'];
-      if (user.userType != 'ADMIN') return new ForbiddenException('Not allowed, Only Admin can update Users');
+      if (user.userType != 'ADMIN')
+        return new ForbiddenException(
+          'Not allowed, Only Admin can update Users',
+        );
 
       let data = await this.authModel.findById(id);
-      if(!data) return new NotFoundException('User not found ❗');
+      if (!data) return new NotFoundException('User not found ❗');
 
-      let newUser = await this.authModel.findByIdAndUpdate(id, updateRegisterDto, {new: true});
+      let newUser = await this.authModel.findByIdAndUpdate(
+        id,
+        updateRegisterDto,
+        { new: true },
+      );
+      
       return { newUser };
     } catch (error) {
       return new BadRequestException(error.message);
     }
   }
 
-  async remove(id: string,  request: Request) {
+  async remove(id: string, request: Request) {
     try {
       let user = request['user'];
-      if (user.userType != 'ADMIN') return new ForbiddenException('Not allowed, Only Admin can delete Users');
+      if (user.userType != 'ADMIN')
+        return new ForbiddenException(
+          'Not allowed, Only Admin can delete Users',
+        );
 
       let data = await this.authModel.findById(id);
-      if(!data) return new NotFoundException('User not found ❗');
+      if (!data) return new NotFoundException('User not found ❗');
 
       await this.authModel.findByIdAndDelete(id);
-      return { message: "User deleted successfully ✅" };
+      return { message: 'User deleted successfully ✅' };
     } catch (error) {
       return new BadRequestException(error.message);
     }
