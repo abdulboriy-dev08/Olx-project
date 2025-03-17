@@ -66,7 +66,12 @@ export class AuthService {
 
   async findAll() {
     try {
-      let data = await this.authModel.find().populate('comment').exec();
+      let data = await this.authModel
+        .find()
+        .select('-comment')
+        .populate({ path: 'region' })
+        .populate({ path: 'banner', select: '-comment' })
+        .exec();
       if (!data.length) return { message: 'Auth table empty' };
 
       return { data };
@@ -77,7 +82,11 @@ export class AuthService {
 
   async findOne(id: string) {
     try {
-      let data = await this.authModel.findById(id).populate('comment');
+      let data = await this.authModel
+        .findById(id)
+        .select('-comment')
+        .populate({ path: 'region' })
+        .populate({ path: 'banner', select: '-comment' });
       if (!data) return new NotFoundException('User not found ❗');
 
       return { data };
