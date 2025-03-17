@@ -7,13 +7,7 @@ import {
   IsString,
   ValidateIf,
 } from 'class-validator';
-
-enum userType {
-  SELLER = 'SELLER',
-  ADMIN = 'ADMIN',
-  CLIENT = 'CLIENT',
-  USER = 'USER',
-}
+import { userRole } from '../schema/auth-schema';
 
 export class registerDto {
   @IsString()
@@ -35,14 +29,14 @@ export class registerDto {
   avatar: string;
 
   @ApiProperty({ example: 'ADMIN' })
-  @IsEnum(userType)
-  userType: userType;
+  @IsEnum(userRole)
+  role: userRole;
 
   @ApiProperty({ example: '67d25f569d198ce0a684066c' })
   region: string;
 
   @ApiPropertyOptional({ example: 'My Awesome Store' })
-  @ValidateIf((o) => o.userType === userType.SELLER)
+  @ValidateIf((o) => o.role === userRole.SELLER)
   @IsNotEmpty({ message: 'ShopName is required for SELLER' })
   shopName: string;
 
