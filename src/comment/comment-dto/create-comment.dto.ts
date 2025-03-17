@@ -6,4 +6,7 @@ export class CreateCommentDto {
 
   @ApiProperty({ example: '5' })
   star: number;
+
+  @ApiProperty({ example: '67d7edc30e6c4e6e722a0afc' })
+  banner: string;
 }

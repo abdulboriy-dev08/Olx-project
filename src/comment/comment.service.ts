@@ -23,7 +23,8 @@ export class CommentService {
     try {
       return await this.commentModel
         .findById(id)
-        .populate({ path: 'auth', select: '-comment' });
+        .populate({ path: 'auth', select: '-comment -banner' })
+        .populate({ path: 'banner', select: '-comment -auth' });
     } catch (error) {
       return new BadRequestException(error.message);
     }
@@ -54,7 +55,8 @@ export class CommentService {
     try {
       let comments = await this.commentModel
         .find()
-        .populate({ path: 'auth', select: '-comment' })
+        .populate({ path: 'auth', select: '-comment -banner' })
+        .populate({ path: 'banner', select: '-comment -auth' })
         .exec();
       if (!comments.length) return { message: 'Comments table empty' };
 
@@ -66,10 +68,10 @@ export class CommentService {
 
   async findOne(id: string) {
     try {
-      let data = await this.findComment(id);
-      if (!data) return new NotFoundException('Comment not found ❗');
+      let comment = await this.findComment(id);
+      if (!comment) return new NotFoundException('Comment not found ❗');
 
-      return { data };
+      return { comment };
     } catch (error) {
       return new BadRequestException(error.message);
     }

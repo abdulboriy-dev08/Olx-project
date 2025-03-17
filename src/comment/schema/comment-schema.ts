@@ -3,6 +3,7 @@ import { Type } from 'class-transformer';
 import { IsDate, IsNumber, IsString } from 'class-validator';
 import mongoose, { Date, HydratedDocument } from 'mongoose';
 import { Auth } from 'src/auth/schema/auth-schema';
+import { Banner } from 'src/banner/schema/banner-schema';
 
 export type CommentDocument = HydratedDocument<Comment>;
 
@@ -17,7 +18,10 @@ export class Comment {
   star: number;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Auth' })
-  auth: Auth;
+  auth: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Banner' })
+  banner: mongoose.Schema.Types.ObjectId;
 }
 
 export const CommentSchema = SchemaFactory.createForClass(Comment);
