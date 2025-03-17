@@ -7,13 +7,7 @@ import {
   IsString,
 } from 'class-validator';
 import { registerDto } from './register-dto';
-
-enum userType {
-  SELLER = 'SELLER',
-  ADMIN = 'ADMIN',
-  CLIENT = 'CLIENT',
-  USER = 'USER',
-}
+import { userRole } from '../schema/auth-schema';
 
 export class updateRegisterDto extends PartialType(registerDto) {
   @IsOptional()
@@ -40,9 +34,9 @@ export class updateRegisterDto extends PartialType(registerDto) {
   avatar?: string;
 
   @IsOptional()
-  @IsEnum(userType)
+  @IsEnum(userRole)
   @ApiPropertyOptional({ example: 'SELLER' })
-  userType?: userType;
+  role?: userRole;
 
   @IsOptional()
   @ApiPropertyOptional({ example: '67d25f569d198ce0a684066c' })
