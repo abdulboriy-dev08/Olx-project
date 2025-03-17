@@ -32,10 +32,6 @@ export class CommentService {
   async create(createCommentDto: CreateCommentDto, request: Request) {
     try {
       let users = request['user'];
-      let userRoles = ['USER', 'CLIENT'];
-
-      if (!userRoles.includes(users.userType))
-        return new ForbiddenException("You can't leave comment ❗");
 
       let data = {
         ...createCommentDto,
@@ -79,20 +75,10 @@ export class CommentService {
     }
   }
 
-  async update(
-    id: string,
-    updateCommentDto: UpdateCommentDto,
-    request: Request,
-  ) {
+  async update(id: string, updateCommentDto: UpdateCommentDto) {
     try {
-      let user = request['user'];
-      let userRoles = ['USER', 'CLIENT'];
-
       let findComment = await this.commentModel.findById(id);
       if (!findComment) return new NotFoundException('Comment not found ❗');
-
-      if (findComment.auth !== user.id && !userRoles.includes(user.userType))
-        return new ForbiddenException("You can't update this comment ❗");
 
       let newComment = await this.commentModel.findByIdAndUpdate(
         id,
@@ -106,16 +92,10 @@ export class CommentService {
     }
   }
 
-  async remove(id: string, request: Request) {
+  async remove(id: string) {
     try {
-      let user = request['user'];
-      let userRoles = ['USER', 'CLIENT'];
-
       let findComment = await this.commentModel.findById(id);
       if (!findComment) return new NotFoundException('Comment not found ❗');
-
-      if (findComment.auth !== user.id && !userRoles.includes(user.userType))
-        return new ForbiddenException("You can't delete this comment ❗");
 
       await this.commentModel.findByIdAndDelete(id);
       return { message: 'Comment deleted successfully ✅' };
