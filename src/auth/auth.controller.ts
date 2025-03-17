@@ -12,75 +12,64 @@ import {
 import { AuthService } from './auth.service';
 import { registerDto } from './auth-dto/register-dto';
 import { loginDto } from './auth-dto/login-dto';
-import { AuthGuard } from 'src/guard/auth-guard';
+import { AuthGuard } from 'src/guards/auth.guard';
 import { Request } from 'express';
 import { updateRegisterDto } from './auth-dto/update-register-dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/decorators/role.decorator';
+import { userRole } from './schema/auth-schema';
+import { RoleGuard } from 'src/guards/role.guard';
 
 @ApiTags('Authorization')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiOperation({
-    summary: 'User registration',
-    description: 'Registers a new user with a username, email, and password.',
-  })
+  @ApiOperation({ summary: 'User registration', description: 'Registers a new user with a username, email, and password.' })
   @Post('/register')
   register(@Body() data: registerDto) {
     return this.authService.register(data);
   }
 
-  @ApiOperation({
-    summary: 'User login',
-    description: 'Logs in a user using username/email and password.',
-  })
+  @ApiOperation({ summary: 'User login', description: 'Logs in a user using username/email and password.' })
   @Post('/login')
   login(@Body() data: loginDto) {
     return this.authService.login(data);
   }
 
-  @ApiOperation({
-    summary: 'Get all Users',
-    description: 'Get all Users',
-  })
+  @ApiOperation({ summary: 'Get all Users', description: 'Get all Users' })
+  @Roles(userRole.ADMIN)
+  @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Get()
-  findAll(@Req() request: Request) {
-    return this.authService.findAll(request);
+  findAll() {
+    return this.authService.findAll();
   }
 
-  @ApiOperation({
-    summary: 'Get One User by ID',
-    description: 'Get One User by ID',
-  })
+  @ApiOperation({ summary: 'Get One User by ID', description: 'Get One User by ID' })
+  @Roles(userRole.ADMIN)
+  @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string, @Req() request: Request) {
-    return this.authService.findOne(id, request);
+  findOne(@Param('id') id: string) {
+    return this.authService.findOne(id);
   }
 
-  @ApiOperation({
-    summary: 'Update users by ID',
-    description: 'Update users by ID',
-  })
+  @ApiOperation({ summary: 'Update users by ID', description: 'Update users by ID' })
+  @Roles(userRole.ADMIN)
+  @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateRegisterDto: updateRegisterDto,
-    @Req() request: Request,
-  ) {
-    return this.authService.update(id, updateRegisterDto, request);
+  update(@Param('id') id: string, @Body() updateRegisterDto: updateRegisterDto) {
+    return this.authService.update(id, updateRegisterDto);
   }
 
-  @ApiOperation({
-    summary: 'Delete Users by ID',
-    description: 'Delete Users By ID',
-  })
+  @ApiOperation({ summary: 'Delete Users by ID', description: 'Delete Users By ID' })
+  @Roles(userRole.ADMIN)
+  @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string, @Req() request: Request) {
-    return this.authService.remove(id, request);
+  remove(@Param('id') id: string) {
+    return this.authService.remove(id);
   }
 }
