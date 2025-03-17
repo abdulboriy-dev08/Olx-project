@@ -12,7 +12,7 @@ enum userType {
   USER = 'USER',
 }
 
-@Schema({ versionKey: false })
+@Schema({ versionKey: false, timestamps: true })
 export class Auth {
   @Prop({ required: true })
   fullName: string;
@@ -43,7 +43,7 @@ export class Auth {
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Banner' }] })
   banner: Banner[];
- 
+
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }] })
   comment: Comment[];
 }
