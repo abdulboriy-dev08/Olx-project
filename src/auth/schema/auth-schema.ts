@@ -5,7 +5,7 @@ import { Region } from 'src/region/schema/region-schema';
 
 export type AuthDocument = HydratedDocument<Auth>;
 
-enum userType {
+export enum userRole {
   SELLER = 'SELLER',
   ADMIN = 'ADMIN',
   CLIENT = 'CLIENT',
@@ -29,8 +29,8 @@ export class Auth {
   @Prop({ required: true })
   avatar: string;
 
-  @Prop({ type: String, enum: userType, default: userType.USER })
-  userType: userType;
+  @Prop({ type: String, enum: userRole, default: userRole.USER })
+  role: userRole;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Region' })
   region: Region;
